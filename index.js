@@ -67,17 +67,18 @@ app.put('/api/courses/:id', (req, res) => {
 });
 
 
-// // ******* Handling DELETE Request *******
+// ******* Handling DELETE Request *******
 
-// app.delete('/api/courses/:id', (req, res) => {
-//     const course = courses.find(c => c.id === parseInt(req.params.id));
-//     if (!course) res.status(404).send('The course with given ID was not found');
+// To delete a course
+app.delete('/api/courses/:id', (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send('The course with given ID was not found');
 
-//     const index = courses.indexOf(course);
-//     courses.splice(index, 1);
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
 
-//     res.send(course);
-// });
+    res.send(course);
+});
 
 
 // Function for Input validation
