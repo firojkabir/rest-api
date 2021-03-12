@@ -24,7 +24,7 @@ app.get('/api/courses', (req, res) => {
 // To get single course by given id
 app.get('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) res.status(404).send('The course with given ID not found');
+    if (!course) res.status(404).send('The course with given ID was not found');
     res.send(course);
 });
 
@@ -33,12 +33,9 @@ app.get('/api/courses/:id', (req, res) => {
 // To create a new course
 app.post('/api/courses', (req, res) => {
     // Input validation 
-    const schema = {
-        name: Joi.string().min(3).required()
-    };
-    const result = Joi.validate(req.body, schema);
-    if (result.error) {
-        res.status(400).send(result.error.details[0].message);
+    const { error } = validateCourse(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
         return;
     }
 
@@ -50,10 +47,47 @@ app.post('/api/courses', (req, res) => {
     res.send(course);
 });
 
+// ******* Handling PUT Request *******
+
+// To update a course
+app.put('/api/courses/:id', (req, res) => {
+    console.log(req.params.id)
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send('The course with given ID was not found');
+
+    // Input validation 
+    const { error } = validateCourse(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
+    course.name = req.body.name;
+    res.send(course);
+});
 
 
+// // ******* Handling DELETE Request *******
+
+// app.delete('/api/courses/:id', (req, res) => {
+//     const course = courses.find(c => c.id === parseInt(req.params.id));
+//     if (!course) res.status(404).send('The course with given ID was not found');
+
+//     const index = courses.indexOf(course);
+//     courses.splice(index, 1);
+
+//     res.send(course);
+// });
 
 
+// Function for Input validation
+function validateCourse(course) {
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+
+    return Joi.validate(course, schema);
+}
 
 
 //Route Parameters(required value)
