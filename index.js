@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
@@ -24,6 +26,20 @@ app.get('/api/courses/:id', (req, res) => {
     if (!course) res.status(404).send('The course with given ID not found');
     res.send(course);
 });
+
+// ******* Handling POST Request *******
+
+app.post('/api/courses', (req, res) => {
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    };
+    courses.push(course);
+    res.send(course);
+});
+
+
+
 
 
 
