@@ -30,19 +30,19 @@ app.get('/courses', (req, res) => {
 });
 
 
-// app.get('/courses/:id', (req, res) => {
-//     let id = req.params.id
-//     // const course = find(parseInt(id));
-//     // if (!course) return res.status(404).send('The course with given ID was not found');
+app.get('/courses/:id', (req, res) => {
+    let id = req.params.id
+    // const course = find(parseInt(id));
+    // if (!course) return res.status(404).send('The course with given ID was not found');
 
-//     con.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
-//         if (err) throw err
-//         return res.json({
-//             message: "Find out specific course successfully",
-//             data: results[0]
-//         })
-//     })
-// });
+    con.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
+        if (err) throw err
+        return res.json({
+            message: "Find out specific course successfully",
+            data: results[0]
+        })
+    })
+});
 
 
 // app.post('/courses', (req, res) => {
