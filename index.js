@@ -56,7 +56,16 @@ app.post('/courses', (req, res) => {
 });
 
 
-
+app.put('/courses/:id', (req, res) => {
+    let id = req.params.id
+    con.query(`UPDATE courses SET name='${req.body.name}' WHERE id = ${id}`, function (err, results) {
+        if (err) throw err
+        return res.json({
+            message: `Updated course with id ${id} successfully`,
+            data: results[0]
+        })
+    })
+});
 
 
 
