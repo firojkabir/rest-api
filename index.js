@@ -68,6 +68,16 @@ app.put('/courses/:id', (req, res) => {
 });
 
 
+app.delete('/courses/:id', (req, res) => {
+    let id = req.params.id
+    con.query(`DELETE FROM courses WHERE id = ${id}`, function (err, results) {
+        if (err) throw err
+        return res.json({
+            message: `Deleted course with id ${id} successfully`,
+            data: results[0]
+        })
+    })
+});
 
 
 
