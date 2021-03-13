@@ -45,15 +45,15 @@ app.get('/courses/:id', (req, res) => {
 });
 
 
-// app.post('/courses', (req, res) => {
-//     con.query(`INSERT INTO courses (name) VALUES ('${req.body.name}')`, function (err, results) {
-//         if (err) throw err
-//         return res.json({
-//             message: "New course inserted successfully",
-//             data: results[0]
-//         })
-//     })
-// });
+app.post('/courses', (req, res) => {
+    con.query(`INSERT INTO courses (name) VALUES ('${req.body.name}')`, function (err, results) {
+        if (err) throw err
+        return res.json({
+            message: "New course inserted successfully",
+            data: results[0]
+        })
+    })
+});
 
 
 
