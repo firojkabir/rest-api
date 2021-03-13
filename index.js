@@ -19,15 +19,15 @@ con.connect(function (err) {
 });
 
 
-// app.get('/courses', (req, res) => {
-//     con.query('SELECT * FROM courses', function (err, results) {
-//         if (err) throw err
-//         return res.json({
-//             message: "All the courses find out successfully",
-//             data: results
-//         })
-//     })
-// });
+app.get('/courses', (req, res) => {
+    con.query('SELECT * FROM courses', function (err, results) {
+        if (err) throw err
+        return res.json({
+            message: "All the courses find out successfully",
+            data: results
+        })
+    })
+});
 
 
 // app.get('/courses/:id', (req, res) => {
