@@ -19,7 +19,7 @@ con.connect(function (err) {
 });
 
 
-app.get('/courses', (req, res) => {
+app.get('/api/courses', (req, res) => {
     con.query('SELECT * FROM courses', function (err, results) {
         if (err) throw err
         return res.json({
@@ -30,7 +30,7 @@ app.get('/courses', (req, res) => {
 });
 
 
-app.get('/courses/:id', (req, res) => {
+app.get('/api/courses/:id', (req, res) => {
     let id = req.params.id
     // const course = find(parseInt(id));
     // if (!course) return res.status(404).send('The course with given ID was not found');
@@ -45,8 +45,8 @@ app.get('/courses/:id', (req, res) => {
 });
 
 
-app.post('/courses', (req, res) => {
-    con.query(`INSERT INTO courses (name) VALUES ('${req.body.name}')`, function (err, results) {
+app.post('/api/courses', (req, res) => {
+    con.query(`INSERT INTO courses (name, prof) VALUES ('${req.body.name}','${req.body.prof}')`, function (err, results) {
         if (err) throw err
         return res.json({
             message: "New course inserted successfully",
@@ -56,9 +56,9 @@ app.post('/courses', (req, res) => {
 });
 
 
-app.put('/courses/:id', (req, res) => {
+app.put('/api/courses/:id', (req, res) => {
     let id = req.params.id
-    con.query(`UPDATE courses SET name='${req.body.name}' WHERE id = ${id}`, function (err, results) {
+    con.query(`UPDATE courses SET name='${req.body.name}', prof='${req.body.prof}' WHERE id = ${id}`, function (err, results) {
         if (err) throw err
         return res.json({
             message: `Updated course with id ${id} successfully`,
@@ -73,8 +73,7 @@ app.delete('/courses/:id', (req, res) => {
     con.query(`DELETE FROM courses WHERE id = ${id}`, function (err, results) {
         if (err) throw err
         return res.json({
-            message: `Deleted course with id ${id} successfully`,
-            data: results[0]
+            message: `Deleted course with id ${id} successfully`
         })
     })
 });
