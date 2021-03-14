@@ -17,11 +17,11 @@ const getById = (req, res) => {
         if (err) throw err
         if (results.length == 0) {
             return res.json({
-                message: 'Not found'
+                message: `ID-${id} Not found`
             })
         } else {
             return res.json({
-                message: "Find out specific course successfully",
+                message: `Find out course  with ID-${id} successfully`,
                 data: results[0]
             })
         }
@@ -39,32 +39,45 @@ const createCourse = (req, res) => {
 }
 
 const updateCourse = (req, res) => {
-    let id = req.params.id
+    const id = req.params.id
 
-
-
-
-
-    db.query(`UPDATE courses SET name='${req.body.name}', prof='${req.body.prof}' WHERE id = ${id}`, function (err, results) {
+    db.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
         if (err) throw err
-        return res.json({
-            message: `Updated course with id ${id} successfully`,
-            data: results[0]
-        })
+        if (results.length == 0) {
+            return res.json({
+                message: `ID-${id} Not found`
+            })
+        } else {
+            db.query(`UPDATE courses SET name='${req.body.name}', prof='${req.body.prof}' WHERE id = ${id}`, function (err, results) {
+                if (err) throw err
+                return res.json({
+                    message: `Updated course with id ${id} successfully`,
+                    data: results[0]
+                })
+            })
+        }
     })
 }
 
 const deleteCourse = (req, res) => {
-    let id = req.params.id
-    db.query(`DELETE FROM courses WHERE id = ${id}`, function (err, results) {
+    const id = req.params.id
+
+    db.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
         if (err) throw err
-        return res.json({
-            message: `Deleted course with id ${id} successfully`
-        })
+        if (results.length == 0) {
+            return res.json({
+                message: `ID-${id} Not found`
+            })
+        } else {
+            db.query(`DELETE FROM courses WHERE id = ${id}`, function (err, results) {
+                if (err) throw err
+                return res.json({
+                    message: `Deleted course with ID-${id} successfully`
+                })
+            })
+        }
     })
 }
-
-
 
 module.exports = {
     getAll,

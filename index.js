@@ -16,7 +16,7 @@ app.post('/api/courses', controller.createCourse);
 
 app.put('/api/courses/:id', controller.updateCourse);
 
-app.delete('/courses/:id', controller.deleteCourse);
+app.delete('/api/courses/:id', controller.deleteCourse);
 
 
 
