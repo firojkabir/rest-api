@@ -1,5 +1,5 @@
 const express = require('express')
-const controller = require('./helper/controller')
+const controller = require('./controllers/course.controller')
 const logger = require('./helper/logger')
 
 const app = express()

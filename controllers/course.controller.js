@@ -1,4 +1,4 @@
-const db = require('./db')
+const db = require('../helper/db')
 const sequelizeDb = require('../sequelize/models/index');
 const courseModel = require('../sequelize/models/course.model');
 sequelizeDb.sequelize.sync();
