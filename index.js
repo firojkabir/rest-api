@@ -1,12 +1,12 @@
-const Joi = require('joi');
-const express = require('express');
-const db = require('./helper/db')
+const express = require('express')
 const controller = require('./helper/controller')
+const logger = require('./helper/logger')
 
 const app = express();
 
 app.use(express.json());
 
+app.use(logger)
 
 app.get('/api/courses', controller.getAll);
 
