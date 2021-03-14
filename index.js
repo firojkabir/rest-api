@@ -1,82 +1,22 @@
 const Joi = require('joi');
 const express = require('express');
-const mysql = require('mysql');
+const db = require('./helper/db')
+const controller = require('./helper/controller')
 
 const app = express();
 
 app.use(express.json());
 
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "learning"
-});
 
-con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connection established!!");
-});
+app.get('/api/courses', controller.getAll);
 
+app.get('/api/courses/:id', controller.getById);
 
-app.get('/api/courses', (req, res) => {
-    con.query('SELECT * FROM courses', function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: "All the courses find out successfully",
-            data: results
-        })
-    })
-});
+app.post('/api/courses', controller.createCourse);
 
+app.put('/api/courses/:id', controller.updateCourse);
 
-app.get('/api/courses/:id', (req, res) => {
-    let id = req.params.id
-    // const course = find(parseInt(id));
-    // if (!course) return res.status(404).send('The course with given ID was not found');
-
-    con.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: "Find out specific course successfully",
-            data: results[0]
-        })
-    })
-});
-
-
-app.post('/api/courses', (req, res) => {
-    con.query(`INSERT INTO courses (name, prof) VALUES ('${req.body.name}','${req.body.prof}')`, function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: "New course inserted successfully",
-            data: results[0]
-        })
-    })
-});
-
-
-app.put('/api/courses/:id', (req, res) => {
-    let id = req.params.id
-    con.query(`UPDATE courses SET name='${req.body.name}', prof='${req.body.prof}' WHERE id = ${id}`, function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: `Updated course with id ${id} successfully`,
-            data: results[0]
-        })
-    })
-});
-
-
-app.delete('/courses/:id', (req, res) => {
-    let id = req.params.id
-    con.query(`DELETE FROM courses WHERE id = ${id}`, function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: `Deleted course with id ${id} successfully`
-        })
-    })
-});
+app.delete('/courses/:id', controller.deleteCourse);
 
 
 
