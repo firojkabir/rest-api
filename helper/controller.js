@@ -1,82 +1,96 @@
 const db = require('./db')
+const sequelizeDb = require('../sequelize/models/index');
+const courseModel = require('../sequelize/models/course.model');
+sequelizeDb.sequelize.sync();
+const Course = sequelizeDb.Course
 
 const getAll = (req, res) => {
-    db.query('SELECT * FROM courses', function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: "All the courses find out successfully",
-            data: results
+    Course.findAll()
+        .then(data => {
+            res.json(data);
         })
-    })
+        .catch(err => {
+            res.status(500).json({
+                message:
+                    err.message || "Some error occurred while retrieving tutorials."
+            });
+        });
 }
 
 const getById = (req, res) => {
     const id = req.params.id
 
-    db.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
-        if (err) throw err
-        if (results.length == 0) {
-            return res.json({
-                message: `ID-${id} Not found`
-            })
-        } else {
-            return res.json({
-                message: `Find out course  with ID-${id} successfully`,
-                data: results[0]
-            })
-        }
+    Course.findByPk(id).then(data => {
+        res.json(data)
     })
 }
 
 const createCourse = (req, res) => {
-    db.query(`INSERT INTO courses (name, prof) VALUES ('${req.body.name}','${req.body.prof}')`, function (err, results) {
-        if (err) throw err
-        return res.json({
-            message: "New course inserted successfully",
-            data: results[0]
+
+    if (!req.body.name || !req.body.prof) {
+        return res.status(400).json({
+            message: "Bad request!"
+        });
+    }
+
+    Course.create(req.body)
+        .then(data => {
+            res.json(data);
         })
-    })
+        .catch(err => {
+            res.status(500).json({
+                message:
+                    err.message || "Some error occurred while creating the Course."
+            });
+        });
 }
 
 const updateCourse = (req, res) => {
     const id = req.params.id
 
-    db.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
-        if (err) throw err
-        if (results.length == 0) {
-            return res.json({
-                message: `ID-${id} Not found`
-            })
-        } else {
-            db.query(`UPDATE courses SET name='${req.body.name}', prof='${req.body.prof}' WHERE id = ${id}`, function (err, results) {
-                if (err) throw err
-                return res.json({
-                    message: `Updated course with id ${id} successfully`,
-                    data: results[0]
-                })
-            })
-        }
+    Course.update(req.body, {
+        where: { id: id }
     })
+        .then(num => {
+            if (num == 1) {
+                res.json({
+                    message: "Course was updated successfully."
+                });
+            } else {
+                res.json({
+                    message: `Cannot update Course with id=${id}. Maybe Course was not found or req.body is empty!`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "Error updating Course with id=" + id
+            });
+        });
 }
 
 const deleteCourse = (req, res) => {
     const id = req.params.id
 
-    db.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
-        if (err) throw err
-        if (results.length == 0) {
-            return res.json({
-                message: `ID-${id} Not found`
-            })
-        } else {
-            db.query(`DELETE FROM courses WHERE id = ${id}`, function (err, results) {
-                if (err) throw err
-                return res.json({
-                    message: `Deleted course with ID-${id} successfully`
-                })
-            })
-        }
+    Course.destroy({
+        where: { id: id }
     })
+        .then(num => {
+            if (num == 1) {
+                res.json({
+                    message: "Course was deleted successfully!"
+                });
+            } else {
+                res.json({
+                    message: `Cannot delete Course with id=${id}. Maybe Course was not found!`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "Could not delete Course with id=" + id
+            });
+        });
 }
 
 module.exports = {
