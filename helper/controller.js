@@ -11,16 +11,20 @@ const getAll = (req, res) => {
 }
 
 const getById = (req, res) => {
-    let id = req.params.id
-    // const course = find(parseInt(id));
-    // if (!course) return res.status(404).send('The course with given ID was not found');
+    const id = req.params.id
 
     db.query(`SELECT * FROM courses WHERE id = ${id}`, function (err, results) {
         if (err) throw err
-        return res.json({
-            message: "Find out specific course successfully",
-            data: results[0]
-        })
+        if (results.length == 0) {
+            return res.json({
+                message: 'Not found'
+            })
+        } else {
+            return res.json({
+                message: "Find out specific course successfully",
+                data: results[0]
+            })
+        }
     })
 }
 
@@ -36,6 +40,11 @@ const createCourse = (req, res) => {
 
 const updateCourse = (req, res) => {
     let id = req.params.id
+
+
+
+
+
     db.query(`UPDATE courses SET name='${req.body.name}', prof='${req.body.prof}' WHERE id = ${id}`, function (err, results) {
         if (err) throw err
         return res.json({
