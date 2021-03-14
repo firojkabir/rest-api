@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql')
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -9,7 +9,7 @@ const db = mysql.createConnection({
 
 db.connect(function (err) {
     if (err) throw err;
-    console.log("DB connection established!!");
+    console.log("DB connection established!!")
 });
 
 module.exports = db
