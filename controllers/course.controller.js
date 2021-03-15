@@ -11,7 +11,7 @@ const getAll = (req, res) => {
         .catch(err => {
             res.status(500).json({
                 message:
-                    err.message || "Some error occurred while retrieving tutorials."
+                    err.message || "Some error occurred while retrieving courses."
             });
         });
 }
@@ -19,9 +19,10 @@ const getAll = (req, res) => {
 const getById = (req, res) => {
     const id = req.params.id
 
-    Course.findByPk(id).then(data => {
-        res.json(data)
-    })
+    Course.findByPk(id)
+        .then(data => {
+            res.json(data)
+        })
 }
 
 const createCourse = (req, res) => {
