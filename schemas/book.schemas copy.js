@@ -1,4 +1,4 @@
-const { Joi } = require('celebrate')
+const { Joi, celebrate } = require('celebrate')
 
 const bookSchema = {
     body: {
