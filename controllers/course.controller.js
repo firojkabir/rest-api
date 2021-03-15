@@ -26,13 +26,6 @@ const getById = (req, res) => {
 }
 
 const createCourse = (req, res) => {
-
-    if (!req.body.name || !req.body.prof) {
-        return res.status(400).json({
-            message: "Bad request!"
-        });
-    }
-
     Course.create(req.body)
         .then(data => {
             res.json(data);

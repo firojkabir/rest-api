@@ -25,13 +25,6 @@ const getById = (req, res) => {
 }
 
 const createBook = (req, res) => {
-
-    if (!req.body.title || !req.body.author) {
-        return res.status(400).json({
-            message: "Bad request!"
-        });
-    }
-
     Book.create(req.body)
         .then(data => {
             res.json(data);

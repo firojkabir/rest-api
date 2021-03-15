@@ -25,13 +25,6 @@ const getById = (req, res) => {
 }
 
 const createProduct = (req, res) => {
-
-    if (!req.body.name || !req.body.desc || !req.body.price) {
-        return res.status(400).json({
-            message: "Bad request!"
-        });
-    }
-
     Product.create(req.body)
         .then(data => {
             res.json(data);
