@@ -1,6 +1,7 @@
 const express = require('express')
 const courseController = require('./controllers/course.controller')
 const bookController = require('./controllers/book.controller')
+const productController = require('./controllers/product.controller')
 const logger = require('./helper/logger')
 
 const sequelizeDb = require('./sequelize/models/index');
@@ -32,6 +33,15 @@ app.put('/api/books/:id', bookController.updateBook)
 
 app.delete('/api/books/:id', bookController.deleteBook)
 
+app.get('/api/products', productController.getAll)
+
+app.get('/api/products/:id', productController.getById)
+
+app.post('/api/products', productController.createProduct)
+
+app.put('/api/products/:id', productController.updateProduct)
+
+app.delete('/api/products/:id', productController.deleteProduct)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}..`))
